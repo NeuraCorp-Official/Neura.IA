@@ -1,6 +1,10 @@
+from dotenv import load_dotenv
+from pathlib import Path
 import os
 from datetime import datetime
 from pymongo import MongoClient, ASCENDING, DESCENDING
+
+load_dotenv(dotenv_path=Path(__file__).parent / ".env")
 
 _client = MongoClient(os.environ.get("MONGODB_URI"))
 db = _client["neuracorp"]
@@ -61,7 +65,7 @@ def remember_important(texto: str):
 
 
 def get_important_memories(session_id: str = None) -> list:
-    sid  = session_id or SESSION_ID
+    sid = session_id or SESSION_ID
     docs = list(
         col_memories
         .find({"session_id": sid}, {"_id": 0, "texto": 1, "criado_em": 1})
